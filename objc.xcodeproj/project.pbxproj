@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		00396A861C81654B00667CB8 /* libobjc.A.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D2AAC0630554660B00DB518D /* libobjc.A.dylib */; };
+		089FD4B71E6C60100094C24E /* TestClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 089FD4B61E6C60100094C24E /* TestClass.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		08F69C691E7D7B89001B11C6 /* MRCTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08F69C681E7D7B89001B11C6 /* MRCTest.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		08F69C6C1E7D7BA6001B11C6 /* ARCTest.m in Sources */ = {isa = PBXBuildFile; fileRef = 08F69C6B1E7D7BA6001B11C6 /* ARCTest.m */; };
 		305B27561C7D9E96005AC125 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 305B27551C7D9E96005AC125 /* main.m */; };
 		307ED08F1C78839C000D10DC /* objc-accessors.mm in Sources */ = {isa = PBXBuildFile; fileRef = 307ED08E1C78839C000D10DC /* objc-accessors.mm */; };
 		3082F17A1BCF4C4500104AE9 /* Object.mm in Sources */ = {isa = PBXBuildFile; fileRef = 3082F1791BCF4C4500104AE9 /* Object.mm */; };
@@ -181,6 +184,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		089FD4B51E6C60100094C24E /* TestClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestClass.h; sourceTree = "<group>"; };
+		089FD4B61E6C60100094C24E /* TestClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestClass.m; sourceTree = "<group>"; };
+		08F69C671E7D7B89001B11C6 /* MRCTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRCTest.h; sourceTree = "<group>"; };
+		08F69C681E7D7B89001B11C6 /* MRCTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRCTest.m; sourceTree = "<group>"; };
+		08F69C6A1E7D7BA6001B11C6 /* ARCTest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ARCTest.h; sourceTree = "<group>"; };
+		08F69C6B1E7D7BA6001B11C6 /* ARCTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ARCTest.m; sourceTree = "<group>"; };
 		304D5E9D1DFD0DFB00D7D1C0 /* libSystem.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libSystem.tbd; path = usr/lib/libSystem.tbd; sourceTree = SDKROOT; };
 		304D5E9F1DFD0E0B00D7D1C0 /* libSystem.B.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libSystem.B.tbd; path = usr/lib/libSystem.B.tbd; sourceTree = SDKROOT; };
 		304D5EA11DFD0ED200D7D1C0 /* libSystem.B.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libSystem.B.dylib; path = ../../../../../usr/lib/libSystem.B.dylib; sourceTree = "<group>"; };
@@ -441,6 +450,12 @@
 			isa = PBXGroup;
 			children = (
 				305B27551C7D9E96005AC125 /* main.m */,
+				089FD4B51E6C60100094C24E /* TestClass.h */,
+				089FD4B61E6C60100094C24E /* TestClass.m */,
+				08F69C671E7D7B89001B11C6 /* MRCTest.h */,
+				08F69C681E7D7B89001B11C6 /* MRCTest.m */,
+				08F69C6A1E7D7BA6001B11C6 /* ARCTest.h */,
+				08F69C6B1E7D7BA6001B11C6 /* ARCTest.m */,
 			);
 			path = "debug-objc";
 			sourceTree = "<group>";
@@ -875,6 +890,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				089FD4B71E6C60100094C24E /* TestClass.m in Sources */,
+				08F69C691E7D7B89001B11C6 /* MRCTest.m in Sources */,
+				08F69C6C1E7D7BA6001B11C6 /* ARCTest.m in Sources */,
 				305B27561C7D9E96005AC125 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

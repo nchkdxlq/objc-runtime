@@ -8,10 +8,15 @@
 
 #import <Foundation/Foundation.h>
 
+#import "TestClass.h"
+#import "MRCTest.h"
+#import "ARCTest.h"
+
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
-        // insert code here...
-        NSLog(@"Hello, World!");
+        [MRCTest mrc_referenceCount];
+        [ARCTest arc_strong];
+        [ARCTest arc_weak];
     }
     return 0;
 }
