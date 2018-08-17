@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2002, 2006 Apple Inc.  All Rights Reserved.
+ * Copyright (c) 2017 Apple Inc.  All Rights Reserved.
  * 
  * @APPLE_LICENSE_HEADER_START@
  * 
@@ -21,39 +21,18 @@
  * @APPLE_LICENSE_HEADER_END@
  */
 
-#ifndef __OBJC_SNYC_H_
-#define __OBJC_SNYC_H_
+/***********************************************************************
+* objc-locks-new.h
+* Declarations of all locks used in the runtime.
+**********************************************************************/
 
-#include <objc/objc.h>
+#ifndef _OBJC_LOCKS_NEW_H
+#define _OBJC_LOCKS_NEW_H
 
+// fork() safety requires careful tracking of all locks used in the runtime.
+// Thou shalt not declare any locks outside this file.
 
-/** 
- * Begin synchronizing on 'obj'.  
- * Allocates recursive pthread_mutex associated with 'obj' if needed.
- * 
- * @param obj The object to begin synchronizing on.
- * 
- * @return OBJC_SYNC_SUCCESS once lock is acquired.  
- */
-OBJC_EXPORT int
-objc_sync_enter(id _Nonnull obj)
-    OBJC_AVAILABLE(10.3, 2.0, 9.0, 1.0, 2.0);
+extern rwlock_t runtimeLock;
+extern mutex_t DemangleCacheLock;
 
-/** 
- * End synchronizing on 'obj'. 
- * 
- * @param obj The object to end synchronizing on.
- * 
- * @return OBJC_SYNC_SUCCESS or OBJC_SYNC_NOT_OWNING_THREAD_ERROR
- */
-OBJC_EXPORT int
-objc_sync_exit(id _Nonnull obj)
-    OBJC_AVAILABLE(10.3, 2.0, 9.0, 1.0, 2.0);
-
-enum {
-    OBJC_SYNC_SUCCESS                 = 0,
-    OBJC_SYNC_NOT_OWNING_THREAD_ERROR = -1
-};
-
-
-#endif // __OBJC_SYNC_H_
+#endif

@@ -541,6 +541,7 @@ extern objc_selopt_t *preoptimizedSelectors(void);
 
 extern Protocol *getPreoptimizedProtocol(const char *name);
 
+extern unsigned getPreoptimizedClassUnreasonableCount();
 extern Class getPreoptimizedClass(const char *name);
 extern Class* copyPreoptimizedClasses(const char *name, int *outCount);
 
@@ -594,29 +595,12 @@ extern char *copyPropertyAttributeValue(const char *attrs, const char *name);
 
 /* locking */
 extern void lock_init(void);
-extern rwlock_t selLock;
-extern mutex_t cacheUpdateLock;
-extern recursive_mutex_t loadMethodLock;
-#if __OBJC2__
-extern rwlock_t runtimeLock;
-#else
-extern mutex_t classLock;
-extern mutex_t methodListLock;
-#endif
 
 class monitor_locker_t : nocopy_t {
     monitor_t& lock;
   public:
     monitor_locker_t(monitor_t& newLock) : lock(newLock) { lock.enter(); }
     ~monitor_locker_t() { lock.leave(); }
-};
-
-class mutex_locker_t : nocopy_t {
-    mutex_t& lock;
-  public:
-    mutex_locker_t(mutex_t& newLock) 
-        : lock(newLock) { lock.lock(); }
-    ~mutex_locker_t() { lock.unlock(); }
 };
 
 class recursive_mutex_locker_t : nocopy_t {
@@ -723,9 +707,11 @@ extern void layout_bitmap_print(layout_bitmap bits);
 
 
 // fixme runtime
+extern bool MultithreadedForkChild;
+extern id objc_noop_imp(id self, SEL _cmd);
 extern Class look_up_class(const char *aClassName, bool includeUnconnected, bool includeClassHandler);
-extern "C" void map_2_images(unsigned count, const char * const paths[],
-                             const struct mach_header * const mhdrs[]);
+extern "C" void map_images(unsigned count, const char * const paths[],
+                           const struct mach_header * const mhdrs[]);
 extern void map_images_nolock(unsigned count, const char * const paths[],
                               const struct mach_header * const mhdrs[]);
 extern void load_images(const char *path, const struct mach_header *mh);
@@ -894,6 +880,46 @@ class StripedMap {
         return const_cast<StripedMap<T>>(this)[p]; 
     }
 
+    // Shortcuts for StripedMaps of locks.
+    void lockAll() {
+        for (unsigned int i = 0; i < StripeCount; i++) {
+            array[i].value.lock();
+        }
+    }
+
+    void unlockAll() {
+        for (unsigned int i = 0; i < StripeCount; i++) {
+            array[i].value.unlock();
+        }
+    }
+
+    void forceResetAll() {
+        for (unsigned int i = 0; i < StripeCount; i++) {
+            array[i].value.forceReset();
+        }
+    }
+
+    void defineLockOrder() {
+        for (unsigned int i = 1; i < StripeCount; i++) {
+            lockdebug_lock_precedes_lock(&array[i-1].value, &array[i].value);
+        }
+    }
+
+    void precedeLock(const void *newlock) {
+        // assumes defineLockOrder is also called
+        lockdebug_lock_precedes_lock(&array[StripeCount-1].value, newlock);
+    }
+
+    void succeedLock(const void *oldlock) {
+        // assumes defineLockOrder is also called
+        lockdebug_lock_precedes_lock(oldlock, &array[0].value);
+    }
+
+    const void *getLock(int i) {
+        if (i < StripeCount) return &array[i].value;
+        else return nil;
+    }
+    
 #if DEBUG
     StripedMap() {
         // Verify alignment expectations.
@@ -1014,6 +1040,10 @@ static uint32_t ptr_hash(uint32_t key)
 #endif
 */
 
+
+
+// Lock declarations
+#include "objc-locks.h"
 
 // Inlined parts of objc_object's implementation
 #include "objc-object.h"
