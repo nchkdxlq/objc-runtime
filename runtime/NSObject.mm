@@ -332,12 +332,15 @@ storeWeak(id *location, objc_object *newObj)
     // Retry if the old value changes underneath us.
  retry:
     if (haveOld) {
+        // *location可能之前指向了其他的对象，先把旧值取出来。
         oldObj = *location;
+        // 取出旧对象的SideTable
         oldTable = &SideTables()[oldObj];
     } else {
         oldTable = nil;
     }
     if (haveNew) {
+        // 取出新对象的SideTable
         newTable = &SideTables()[newObj];
     } else {
         newTable = nil;

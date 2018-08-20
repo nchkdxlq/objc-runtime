@@ -29,6 +29,9 @@ __weak NSObject *weak_obj = nil;
     NSObject *obj = [[NSObject alloc] init];
     weak_obj = obj; // objc_storeWeak(&weak_obj, obj)
     NSLog(@"weak_obj = %@", weak_obj);
+    
+    NSObject *obj1 = [NSObject new];
+    __weak NSObject *weak_obj1 = obj1;
 }
 
 

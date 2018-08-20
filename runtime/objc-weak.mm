@@ -309,7 +309,18 @@ static weak_entry_t *
 weak_entry_for_referent(weak_table_t *weak_table, objc_object *referent)
 {
     assert(referent);
-
+    
+    /*
+     并不是一个对象对应一个weak_table, 而是多个对象对应着一个weak_table
+     1. 一个weak_table_t中可能存储着多个对象的weak_entry
+     解释：
+     从 class StripedMap 类的indexForPointer(const void *p)可以看出
+     不同的p，可能对象相同的SiteTable, 也就是说不同的对象可能对应相同的SiteTable;
+     而一个SiteTable中有一个weak_table，所以一个weak_table中可能存储不同对象的weak_entry。
+     这也就解释了为什么需要从weak_table中找到对象对应的weak_entry。
+     
+     */
+    
     weak_entry_t *weak_entries = weak_table->weak_entries;
 
     if (!weak_entries) return nil;

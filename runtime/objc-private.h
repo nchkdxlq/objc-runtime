@@ -867,6 +867,7 @@ class StripedMap {
 
     PaddedT array[StripeCount];
 
+    // 不同的地址可能共用一个index
     static unsigned int indexForPointer(const void *p) {
         uintptr_t addr = reinterpret_cast<uintptr_t>(p);
         return ((addr >> 4) ^ (addr >> 9)) % StripeCount;
